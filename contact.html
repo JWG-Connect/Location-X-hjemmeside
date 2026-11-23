@@ -25,25 +25,22 @@
     <div class="sec-top">
       <h2 class="sec-title">GET IN TOUCH WITH LOCATION X</h2>
     </div>
-    <div class="form-box">
-      <form action="https://web3forms.com" method="POST">
-        <input type="hidden" name="access_key" value="c358aae1-94d6-4eef-8be3-d518dee7cb55">
-        <input type="hidden" name="subject" value="Ny besked fra Location X Website">
-        <input type="hidden" name="from_name" value="Location X Website">
 
+       <div class="form-box">
+      <form id="directMailForm">
         <div class="form-group">
           <label>Name / Venue / Organization</label>
-          <input type="text" name="name" required placeholder="Your name, club, or school">
+          <input type="text" id="fName" required placeholder="Your name, club, or school">
         </div>
 
         <div class="form-group">
           <label>Email or Phone / WhatsApp</label>
-          <input type="text" name="contact" required placeholder="email@example.com or +45 / +49">
+          <input type="text" id="fContact" required placeholder="email@example.com or +45 / +49">
         </div>
 
         <div class="form-group">
           <label>Subject / Inquiry Type</label>
-          <select name="inquiry">
+          <select id="fSubject">
             <option>Early Access: Upcoming Club Night (18+)</option>
             <option>Early Access: Party Bus Tour (18–25 Years)</option>
             <option>Private Group Bus Request (40–55 Pax)</option>
@@ -54,7 +51,7 @@
 
         <div class="form-group">
           <label>Message / Preferred Date &amp; City</label>
-          <textarea name="message" rows="5" required placeholder="Tell us about your event, preferred date, location, or guest count..."></textarea>
+          <textarea id="fMessage" rows="5" required placeholder="Tell us about your event, preferred date, location, or guest count..."></textarea>
         </div>
 
         <button type="submit" class="btn-white" style="width: 100%;">SEND MESSAGE</button>
@@ -64,7 +61,7 @@
         <span class="badge" style="margin-bottom: 6px;">IMPRESSUM // LEGAL INFORMATION</span>
         <strong style="color: #ffffff;" class="notranslate">LOCATION X</strong> is operated by <strong style="color: #ffffff;" class="notranslate">Givvidere</strong><br>
         Registered in Denmark &bull; CVR-nr.: <strong>46086984</strong><br>
-        Direct Contact: <strong>sebastianjoh2132@gmail.com</strong>
+        Direct Contact: <a href="mailto:sebastianjoh2132@gmail.com" style="color: #38bdf8; text-decoration: none;"><strong>sebastianjoh2132@gmail.com</strong></a>
       </div>
     </div>
   </section>
@@ -77,10 +74,24 @@
       <a href="contact.html">Impressum &amp; Kontakt</a>
     </div>
   </footer>
+
+  <script>
+    document.getElementById('directMailForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('fName').value;
+      const contact = document.getElementById('fContact').value;
+      const subject = document.getElementById('fSubject').value;
+      const message = document.getElementById('fMessage').value;
+
+      const body = `Name / Venue: ${name}\nContact (Email/Phone): ${contact}\n\nMessage:\n${message}`;
+      window.location.href = `mailto:sebastianjoh2132@://gmail.com{encodeURIComponent('Location X: ' + subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
   <script src="js/lang.js"></script>
 </body>
 </html>
-   
+
+
 
 
 
