@@ -76,7 +76,7 @@
     </div>
   </footer>
 
-  <script>
+    <script>
     document.getElementById('locxContactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
@@ -85,19 +85,24 @@
       btn.disabled = true;
 
       const formData = new FormData(this);
-      formData.append('_subject', 'Ny besked fra Location X Website');
+      formData.append('access_key', 'INDSÆT-DIN-WEB3FORMS-KEY-HER');
+      formData.append('subject', 'Ny besked fra Location X Website');
 
-      fetch('https://formsubmit.co', {
+      fetch('https://web3forms.com', {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
         body: formData
       })
       .then(res => res.json())
       .then(data => {
-        status.style.display = 'block';
-        status.textContent = 'MESSAGE SENT! WE WILL GET BACK TO YOU SHORTLY.';
-        btn.textContent = 'SENT ✓';
-        this.reset();
+        if (data.success) {
+          status.style.display = 'block';
+          status.style.color = '#38bdf8';
+          status.textContent = 'MESSAGE SENT! WE WILL GET BACK TO YOU SHORTLY.';
+          btn.textContent = 'SENT ✓';
+          this.reset();
+        } else {
+          throw new Error(data.message);
+        }
       })
       .catch(err => {
         status.style.display = 'block';
@@ -111,3 +116,4 @@
   <script src="js/lang.js"></script>
 </body>
 </html>
+
