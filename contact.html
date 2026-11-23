@@ -25,22 +25,25 @@
     <div class="sec-top">
       <h2 class="sec-title">GET IN TOUCH WITH LOCATION X</h2>
     </div>
-
     <div class="form-box">
-      <form id="locxContactForm">
+      <form action="https://web3forms.com" method="POST">
+        <input type="hidden" name="access_key" value="c358aae1-94d6-4eef-8be3-d518dee7cb55">
+        <input type="hidden" name="subject" value="Ny besked fra Location X Website">
+        <input type="hidden" name="from_name" value="Location X Website">
+
         <div class="form-group">
           <label>Name / Venue / Organization</label>
-          <input type="text" name="Name" required placeholder="Your name, club, or school">
+          <input type="text" name="name" required placeholder="Your name, club, or school">
         </div>
 
         <div class="form-group">
           <label>Email or Phone / WhatsApp</label>
-          <input type="text" name="Email_or_Phone" required placeholder="email@example.com or +45 / +49">
+          <input type="text" name="contact" required placeholder="email@example.com or +45 / +49">
         </div>
 
         <div class="form-group">
           <label>Subject / Inquiry Type</label>
-          <select name="Inquiry_Type">
+          <select name="inquiry">
             <option>Early Access: Upcoming Club Night (18+)</option>
             <option>Early Access: Party Bus Tour (18–25 Years)</option>
             <option>Private Group Bus Request (40–55 Pax)</option>
@@ -51,11 +54,10 @@
 
         <div class="form-group">
           <label>Message / Preferred Date &amp; City</label>
-          <textarea name="Message" rows="5" required placeholder="Tell us about your event, preferred date, location, or guest count..."></textarea>
+          <textarea name="message" rows="5" required placeholder="Tell us about your event, preferred date, location, or guest count..."></textarea>
         </div>
 
-        <button type="submit" id="submitBtn" class="btn-white" style="width: 100%;">SEND MESSAGE</button>
-        <p id="formStatus" style="margin-top: 16px; text-align: center; font-size: 0.85rem; color: #38bdf8; display: none;"></p>
+        <button type="submit" class="btn-white" style="width: 100%;">SEND MESSAGE</button>
       </form>
 
       <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid #222; font-size: 0.82rem; color: #8e8e93; line-height: 1.7;">
@@ -75,47 +77,10 @@
       <a href="contact.html">Impressum &amp; Kontakt</a>
     </div>
   </footer>
-
-      <script>
-    document.getElementById('locxContactForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submitBtn');
-      const status = document.getElementById('formStatus');
-      btn.textContent = 'SENDING...';
-      btn.disabled = true;
-
-      const formData = new FormData(this);
-      const object = Object.fromEntries(formData);
-      object.access_key = 'INDSÆT-DIN-WEB3FORMS-KEY-HER';
-      object.subject = 'Ny besked fra Location X Website';
-
-      try {
-        const res = await fetch('https://web3forms.com', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(object)
-        });
-        const data = await res.json();
-        if (data.success) {
-          status.style.display = 'block';
-          status.style.color = '#38bdf8';
-          status.textContent = 'MESSAGE SENT! WE WILL GET BACK TO YOU SHORTLY.';
-          btn.textContent = 'SENT ✓';
-          this.reset();
-        } else {
-          throw new Error(data.message || 'Failed');
-        }
-      } catch (err) {
-        status.style.display = 'block';
-        status.style.color = '#ef4444';
-        status.textContent = 'ERROR: ' + err.message;
-        btn.textContent = 'SEND MESSAGE';
-        btn.disabled = false;
-      }
-    });
-  </script>
   <script src="js/lang.js"></script>
 </body>
 </html>
+   
+
 
 
