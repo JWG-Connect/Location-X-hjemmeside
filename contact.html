@@ -76,8 +76,8 @@
     </div>
   </footer>
 
-    <script>
-    document.getElementById('locxContactForm').addEventListener('submit', function(e) {
+      <script>
+    document.getElementById('locxContactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = document.getElementById('submitBtn');
       const status = document.getElementById('formStatus');
@@ -85,15 +85,17 @@
       btn.disabled = true;
 
       const formData = new FormData(this);
-      formData.append('access_key', 'INDSÆT-DIN-WEB3FORMS-KEY-HER');
-      formData.append('subject', 'Ny besked fra Location X Website');
+      const object = Object.fromEntries(formData);
+      object.access_key = 'INDSÆT-DIN-WEB3FORMS-KEY-HER';
+      object.subject = 'Ny besked fra Location X Website';
 
-      fetch('https://web3forms.com', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
+      try {
+        const res = await fetch('https://web3forms.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(object)
+        });
+        const data = await res.json();
         if (data.success) {
           status.style.display = 'block';
           status.style.color = '#38bdf8';
@@ -101,19 +103,19 @@
           btn.textContent = 'SENT ✓';
           this.reset();
         } else {
-          throw new Error(data.message);
+          throw new Error(data.message || 'Failed');
         }
-      })
-      .catch(err => {
+      } catch (err) {
         status.style.display = 'block';
         status.style.color = '#ef4444';
-        status.textContent = 'ERROR SENDING — PLEASE EMAIL US AT SEBASTIANJOH2132@GMAIL.COM';
+        status.textContent = 'ERROR: ' + err.message;
         btn.textContent = 'SEND MESSAGE';
         btn.disabled = false;
-      });
+      }
     });
   </script>
   <script src="js/lang.js"></script>
 </body>
 </html>
+
 
