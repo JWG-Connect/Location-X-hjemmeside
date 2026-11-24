@@ -1,14 +1,57 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Events & Tickets | LOCATION X</title>
+  <title>THE LOCATION X POST | Events & Tickets</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .newspaper-wrapper { max-width: 1180px; margin: 2rem auto 4rem; padding: 0 1.25rem; }
+    .paper-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem; gap: 1rem; flex-wrap: wrap; }
+    .paper-nav-btns { display: flex; gap: 0.65rem; align-items: center; }
+    .paper-btn { background: #111; color: #fff; border: 1px solid #333; padding: 0.65rem 1.2rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: 0.25s; }
+    .paper-btn:hover:not(:disabled) { background: #fff; color: #000; border-color: #fff; }
+    .paper-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .page-indicator { font-size: 0.8rem; color: #9ca3af; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+    .book-stage { perspective: 2600px; position: relative; width: 100%; }
+    .newspaper-spread { display: grid; grid-template-columns: 1fr 1fr; background: #ede9df; color: #111; border-radius: 0; box-shadow: 0 35px 80px rgba(0,0,0,0.95), 0 2px 0 #d5d0c3, 0 5px 0 #1a1a1a, 0 7px 0 #c8c2b4; min-height: 640px; position: relative; transform-style: preserve-3d; }
+    .newspaper-spread::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 56px; transform: translateX(-50%); background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.06) 35%, rgba(0,0,0,0.22) 49%, rgba(255,255,255,0.35) 50%, rgba(0,0,0,0.18) 51%, rgba(0,0,0,0.05) 65%, rgba(0,0,0,0) 100%); pointer-events: none; z-index: 6; }
+    .newspaper-spread.cover-mode { grid-template-columns: 1fr; max-width: 600px; margin: 0 auto; }
+    .newspaper-spread.cover-mode::after { display: none; }
+    .flip-leaf { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 25; transform-style: preserve-3d; pointer-events: none; will-change: transform; }
+    .flip-leaf.flip-next { right: 0; transform-origin: left center; animation: smoothFlipNext 0.88s cubic-bezier(0.32, 0.72, 0.24, 1) forwards; }
+    .flip-leaf.flip-prev { left: 0; transform-origin: right center; animation: smoothFlipPrev 0.88s cubic-bezier(0.32, 0.72, 0.24, 1) forwards; }
+    .flip-leaf.flip-cover { left: 0; width: 100%; transform-origin: left center; animation: smoothCoverOpen 0.88s cubic-bezier(0.32, 0.72, 0.24, 1) forwards; }
+    .flip-face { position: absolute; inset: 0; background: #ede9df; backface-visibility: hidden; overflow: hidden; }
+    .flip-face.back { transform: rotateY(180deg); }
+    .curl-light { position: absolute; inset: 0; pointer-events: none; animation: paperCurlLight 0.88s cubic-bezier(0.32, 0.72, 0.24, 1) forwards; }
+    .under-shadow { position: absolute; inset: 0; pointer-events: none; z-index: 15; animation: underPageShadow 0.88s ease-in-out forwards; }
+    @keyframes smoothFlipNext { 0% { transform: rotateY(0deg); } 35% { transform: rotateY(-58deg) skewY(-1.8deg); box-shadow: -28px 18px 45px rgba(0,0,0,0.45); } 65% { transform: rotateY(-122deg) skewY(1.8deg); box-shadow: 28px 18px 45px rgba(0,0,0,0.45); } 100% { transform: rotateY(-180deg); } }
+    @keyframes smoothFlipPrev { 0% { transform: rotateY(0deg); } 35% { transform: rotateY(58deg) skewY(1.8deg); box-shadow: 28px 18px 45px rgba(0,0,0,0.45); } 65% { transform: rotateY(122deg) skewY(-1.8deg); box-shadow: -28px 18px 45px rgba(0,0,0,0.45); } 100% { transform: rotateY(180deg); } }
+    @keyframes smoothCoverOpen { 0% { transform: rotateY(0deg); opacity: 1; } 50% { transform: rotateY(-95deg) skewY(-1.5deg); box-shadow: -35px 20px 60px rgba(0,0,0,0.6); opacity: 0.95; } 100% { transform: rotateY(-180deg); opacity: 0; } }
+    @keyframes paperCurlLight { 0%,100% { background: transparent; } 45% { background: linear-gradient(90deg, rgba(0,0,0,0.28) 0%, rgba(255,255,255,0.25) 35%, rgba(0,0,0,0.18) 75%, rgba(0,0,0,0.35) 100%); } }
+    @keyframes underPageShadow { 0%,100% { background: transparent; } 45% { background: rgba(0,0,0,0.24); } }
+    .paper-page { padding: 2.1rem 2.3rem; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid rgba(0,0,0,0.16); height: 100%; box-sizing: border-box; background-color: #ede9df; background-image: linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.035) 1px, transparent 0); background-size: 100% 24px, 16px 16px; position: relative; }
+    .paper-page:last-child { border-right: none; }
+    .paper-page.clickable-left { cursor: w-resize; }
+    .paper-page.clickable-right { cursor: e-resize; }
+    .masthead { text-align: center; border-top: 4px double #111; border-bottom: 4px double #111; padding: 0.7rem 0; margin-bottom: 0.85rem; }
+    .masthead h1 { font-family: Georgia, "Times New Roman", serif; font-size: 2.35rem; font-weight: 900; letter-spacing: 0.03em; margin: 0; color: #111; }
+    .masthead-meta { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1.5px solid #111; padding-bottom: 0.4rem; margin-bottom: 1.15rem; color: #222; }
+    .paper-headline { font-family: Georgia, serif; font-size: 1.8rem; font-weight: 900; line-height: 1.1; margin: 0.45rem 0 0.75rem; text-transform: uppercase; color: #111; }
+    .paper-kicker { display: inline-block; background: #111; color: #ede9df; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; padding: 0.25rem 0.6rem; text-transform: uppercase; }
+    .paper-single-col { font-family: Georgia, serif; font-size: 0.95rem; line-height: 1.6; color: #1a1a1a; border-top: 1px solid #111; border-bottom: 1px solid #111; padding: 0.95rem 0; margin: 0.85rem 0; }
+    .paper-details-box { background: rgba(0,0,0,0.04); border: 1px solid #111; padding: 0.85rem 1rem; font-size: 0.81rem; line-height: 1.55; margin-bottom: 1rem; }
+    .paper-cta { display: block; width: 100%; text-align: center; background: #111; color: #ede9df; padding: 0.85rem 1rem; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border: 2px solid #111; transition: 0.2s; box-sizing: border-box; cursor: pointer; }
+    .paper-cta:hover { background: transparent; color: #111; }
+    .paper-footer-num { display: flex; justify-content: space-between; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #444; margin-top: 1.15rem; padding-top: 0.45rem; border-top: 1px solid rgba(0,0,0,0.25); }
+    .paper-stamp { border: 2px dashed #991b1b; color: #991b1b; padding: 0.45rem 0.75rem; font-weight: 800; font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; margin-bottom: 0.85rem; }
+    @media (max-width: 820px) { .newspaper-spread { grid-template-columns: 1fr; min-height: auto; } .newspaper-spread::after { display: none; } .flip-leaf { width: 100%; left: 0 !important; right: auto !important; transform-origin: left center !important; } .paper-page { padding: 1.5rem 1.2rem; border-right: none; border-bottom: 2px solid #111; } .masthead h1 { font-size: 1.7rem; } .paper-headline { font-size: 1.4rem; } }
+  </style>
 </head>
 <body>
   <header class="top-bar">
-    <a href="index.html" class="brand-box">LOCATION X</a>
+    <a href="index.html" class="brand-box notranslate">LOCATION X</a>
     <ul class="nav-links">
       <li><a href="index.html">HOME</a></li>
       <li><a href="concepts.html">CLUB CONCEPTS</a></li>
@@ -19,37 +62,164 @@
     </ul>
   </header>
 
-  <div class="promo-strip">UPCOMING CLUB NIGHTS, PARTY BUS TOURS &amp; TICKET RELEASES</div>
+  <div class="promo-strip" id="paperPromoStrip">THE LOCATION X POST — CLICK PAGE OR USE ARROWS TO FLIP</div>
 
-  <section class="events-section">
-    <div class="sec-top">
-      <h2 class="sec-title">UPCOMING EVENTS &amp; PARTY BUS TOURS</h2>
-      <a href="contact.html" class="sec-link">GET EARLY ACCESS →</a>
-    </div>
-
-    <div id="all-events-grid" class="events-grid"></div>
-
-    <div style="background: #0a0a0a; border: 1px solid #222; padding: 32px; margin-top: 55px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;">
-      <div>
-        <span class="v-tag">STRICTLY 18+ &bull; 1-HOUR HEAD START</span>
-<h4>GET YOUR TICKET 1 HOUR BEFORE EVERYONE ELSE</h4>
-<p>Join the official Location X priority list to receive a private ticket link 1 full hour before public release.</p>
-      </div>
-      <div class="btn-row">
-        <a href="index.html#early-access" class="btn-white">JOIN EARLY ACCESS</a>
+  <main class="newspaper-wrapper">
+    <div class="paper-controls">
+      <div class="page-indicator" id="pageIndicator">FRONT PAGE // EDITION NO. 01</div>
+      <div class="paper-nav-btns">
+        <button class="paper-btn" id="prevPageBtn" disabled>← PREV PAGE</button>
+        <button class="paper-btn" id="nextPageBtn">OPEN NEWSPAPER →</button>
       </div>
     </div>
-  </section>
+    <div class="book-stage" id="bookStage">
+      <div id="newspaperSpread" class="newspaper-spread cover-mode"></div>
+    </div>
+  </main>
 
   <footer>
     <div>&copy; 2026 <strong class="notranslate">LOCATION X</strong> &bull; Operated by <strong class="notranslate">Givvidere</strong> &bull; CVR: 46598164 (Denmark)</div>
     <div>
-      <a href="events.html">Tickets</a>
+      <a href="events.html">Events & Tickets</a>
       <a href="mobile-club.html">Equipment</a>
       <a href="contact.html">Impressum & Kontakt</a>
     </div>
   </footer>
+
   <script src="js/events.js"></script>
   <script src="js/lang.js"></script>
+  <script>
+    (function () {
+      const stageEl = document.getElementById("bookStage"), spreadEl = document.getElementById("newspaperSpread");
+      const prevBtn = document.getElementById("prevPageBtn"), nextBtn = document.getElementById("nextPageBtn");
+      const indicator = document.getElementById("pageIndicator"), promoStrip = document.getElementById("paperPromoStrip");
+
+      const I18N = {
+        en: {
+          strip: "THE LOCATION X POST — CLICK PAGE OR USE ARROWS TO FLIP", frontLabel: "FRONT PAGE // EDITION NO. 01", pagesLabel: "PAGES {p1} – {p2} // EDITION NO. 01",
+          prevBtn: "← PREV PAGE", openBtn: "OPEN NEWSPAPER →", nextBtn: "NEXT PAGE →", subHeader: "HAMBURG • DENMARK • NIGHTLIFE", freeEd: "FREE EDITION",
+          kicker: "BREAKING NIGHTLIFE NEWS", coverHeadline: "NEW CLUB TAKEOVERS & PARTY BUS EDITIONS ANNOUNCED",
+          coverP1: "<strong>HAMBURG / DENMARK —</strong> Location X prepares its upcoming wave of high-energy Tech-House & Commercial club nights in Hamburg alongside cross-border Party Bus Tours.",
+          coverP2: "Capacity for every edition is strictly limited. Priority list members receive a private ticket link <strong>1 full hour before</strong> public release.",
+          insideTitle: "INSIDE THIS EDITION:", insideP2: "<strong>Page 02:</strong> Location X: Hamburg (Club Concept)", insideP3: "<strong>Page 03:</strong> Party Bus Tour: Denmark → Hamburg", insidePrio: "<strong>Priority Access:</strong> 1-Hour Ticket Head Start",
+          coverCta: "FLIP TO PAGE 02 & 03 →", pageWord: "PAGE", editionWord: "EDITION NO. 01", stamp: "PREVIEW EDITION // NEW DATES DROPPING SOON",
+          dateWord: "DATE:", locWord: "LOCATION:", ageWord: "AGE LIMIT:", ageVal: "Strictly 18+", ctaDefault: "GET 1-HOUR EARLY ACCESS",
+          ev1Tag: "CLUB CONCEPT • STRICTLY 18+", ev1Title: "LOCATION X: HAMBURG", ev1Date: "UPCOMING • TBA", ev1Loc: "Hamburg, Germany — Early Access Open",
+          ev1Desc: "A brand-new high-energy Tech-House & Commercial club night on Reeperbahn / Große Freiheit featuring DJ SJ, dancers, and full CO2 & confetti production.",
+          ev2Tag: "BUS + CLUB ENTRY • 18–25 YRS", ev2Title: "PARTY BUS TOUR: DENMARK → HAMBURG", ev2Date: "NEXT EDITION • TBA", ev2Loc: "Selected Pickup Stops — All-Inclusive Package",
+          ev2Desc: "Round-trip private party bus charter straight from Denmark to Hamburg's hottest clubs and back when the party closes. Sound system and pre-party included on board."
+        },
+        de: {
+          strip: "THE LOCATION X POST — SEITE ANKLICKEN ODER PFEILTASTEN NUTZEN", frontLabel: "TITELSEITE // AUSGABE NR. 01", pagesLabel: "SEITEN {p1} – {p2} // AUSGABE NR. 01",
+          prevBtn: "← ZURÜCK", openBtn: "ZEITUNG ÖFFNEN →", nextBtn: "NÄCHSTE SEITE →", subHeader: "HAMBURG • DÄNEMARK • NIGHTLIFE", freeEd: "GRATIS AUSGABE",
+          kicker: "AKTUELLE CLUB-NEWS", coverHeadline: "NEUE CLUB-KONZEPTE & PARTYBUS-TOUREN ANGEKÜNDIGT",
+          coverP1: "<strong>HAMBURG / DÄNEMARK —</strong> Location X startet eine neue Reihe energiegeladener Tech-House & Commercial Clubnächte in Hamburg sowie grenzüberschreitende Partybus-Touren.",
+          coverP2: "Die Kapazität ist streng limitiert. Mitglieder der Priority-Liste erhalten den geheimen Ticket-Link <strong>1 volle Stunde vor</strong> dem offiziellen Vorverkauf.",
+          insideTitle: "IN DIESER AUSGABE:", insideP2: "<strong>Seite 02:</strong> Location X: Hamburg (Club-Konzept)", insideP3: "<strong>Seite 03:</strong> Partybus-Tour: Dänemark → Hamburg", insidePrio: "<strong>Priority Access:</strong> 1 Stunde Ticket-Vorsprung",
+          coverCta: "ZU SEITE 02 & 03 BLÄTTERN →", pageWord: "SEITE", editionWord: "AUSGABE NR. 01", stamp: "VORSCHAU-AUSGABE // NEUE TERMINE FOLGEN IN KÜRZE",
+          dateWord: "DATUM:", locWord: "ORT:", ageWord: "ALTERSGRENZE:", ageVal: "Streng ab 18 Jahren", ctaDefault: "1 STUNDE FRÜHER ZUGANG SICHERN",
+          ev1Tag: "CLUB-KONZEPT • STRENG AB 18", ev1Title: "LOCATION X: HAMBURG", ev1Date: "DEMNÄCHST • TBA", ev1Loc: "Hamburg, Deutschland — Early Access geöffnet",
+          ev1Desc: "Eine brandneue Tech-House & Commercial Clubnacht auf der Reeperbahn / Große Freiheit mit DJ SJ, Tänzerinnen sowie CO2- & Konfetti-Show.",
+          ev2Tag: "BUS + CLUB-EINTRITT • 18–25 JAHRE", ev2Title: "PARTYBUS-TOUR: DÄNEMARK → HAMBURG", ev2Date: "NÄCHSTE TOUR • TBA", ev2Loc: "Ausgewählte Zustiege — All-Inclusive Paket",
+          ev2Desc: "Hin- und Rückfahrt im privaten Partybus direkt aus Dänemark zu den besten Clubs in Hamburg und nach Partyende wieder zurück. Soundsystem & Pre-Party an Bord."
+        },
+        da: {
+          strip: "THE LOCATION X POST — KLIK PÅ SIDEN ELLER BRUG PILETASTERNE", frontLabel: "FORSIDE // UDGAVE NR. 01", pagesLabel: "SIDE {p1} – {p2} // UDGAVE NR. 01",
+          prevBtn: "← FORRIGE SIDE", openBtn: "ÅBN AVISEN →", nextBtn: "NÆSTE SIDE →", subHeader: "HAMBORG • DANMARK • NATTELIV", freeEd: "GRATIS UDGAVE",
+          kicker: "SENESTE NYT FRA LOCATION X", coverHeadline: "NYE KLUBKONCEPTER & PARTYBUS-TURE OFFENTLIGGJORT",
+          coverP1: "<strong>HAMBORG / DANMARK —</strong> Location X gør klar til nye energifyldte Tech-House & Commercial klubaftener i Hamborg samt Partybus-ture tur/retur.",
+          coverP2: "Kapaciteten er strengt begrænset. Alle på prioritetslisten får et hemmeligt billetlink <strong>1 hel time før</strong> det offentlige billetsalg åbner.",
+          insideTitle: "I DENNE UDGAVE:", insideP2: "<strong>Side 02:</strong> Location X: Hamborg (Klubkoncept)", insideP3: "<strong>Side 03:</strong> Partybus-tur: Danmark → Hamborg", insidePrio: "<strong>Priority Access:</strong> 1 times forspring til billetter",
+          coverCta: "BLADR TIL SIDE 02 & 03 →", pageWord: "SIDE", editionWord: "UDGAVE NR. 01", stamp: "FORHÅNDSVISNING // NYE DATOER KOMMER SNART",
+          dateWord: "DATO:", locWord: "STED:", ageWord: "ALDERSGRÆNSE:", ageVal: "Strengt 18+", ctaDefault: "FÅ 1 TIMES EARLY ACCESS",
+          ev1Tag: "KLUBKONCEPT • STRENGT 18+", ev1Title: "LOCATION X: HAMBORG", ev1Date: "KOMMER SNART • TBA", ev1Loc: "Hamborg, Tyskland — Early Access åben",
+          ev1Desc: "En helt ny energifyldt Tech-House & Commercial klubnat på Reeperbahn / Große Freiheit med DJ SJ, danserinder samt CO2- og konfettishow.",
+          ev2Tag: "BUS + ENTRÉ • 18–25 ÅR", ev2Title: "PARTYBUS-TUR: DANMARK → HAMBORG", ev2Date: "NÆSTE TUR • TBA", ev2Loc: "Udvalgte opsamlingssteder — All-Inclusive pakke",
+          ev2Desc: "Privat partybus tur/retur direkte fra Danmark til klubben i Hamborg og hjem igen, når festen lukker. Lydanlæg og pre-party ombord."
+        }
+      };
+      function getLang() {
+        const s = (localStorage.getItem("locationx_lang") || localStorage.getItem("lang") || localStorage.getItem("language") || document.documentElement.lang || "en").toLowerCase();
+        return s.startsWith("de") ? "de" : (s.startsWith("da") ? "da" : "en");
+      }
+
+      function buildSpreads() {
+        const t = I18N[getLang()] || I18N.en;
+        promoStrip.textContent = t.strip;
+        const events = [
+          { tag: t.ev1Tag, title: t.ev1Title, date: t.ev1Date, description: t.ev1Desc, location: t.ev1Loc, ctaText: t.ctaDefault, ctaLink: "index.html#early-access", expired: true },
+          { tag: t.ev2Tag, title: t.ev2Title, date: t.ev2Date, description: t.ev2Desc, location: t.ev2Loc, ctaText: t.ctaDefault, ctaLink: "index.html#early-access", expired: true }
+        ];
+        const list = [{
+          isCover: true, label: t.frontLabel, rightHtml: "",
+          leftHtml: `<article class="paper-page clickable-right" data-turn="next"><div><div class="masthead"><div style="font-size:0.7rem;letter-spacing:0.22em;font-weight:700;margin-bottom:0.25rem;">${t.subHeader}</div><h1 class="notranslate">THE LOCATION X POST</h1></div><div class="masthead-meta"><span>VOL. 01 — 2026</span><span>${t.ageVal}</span><span>${t.freeEd}</span></div><span class="paper-kicker">${t.kicker}</span><h2 class="paper-headline">${t.coverHeadline}</h2><div class="paper-single-col"><p>${t.coverP1}</p><p style="margin-top:0.65rem;">${t.coverP2}</p></div><div class="paper-details-box"><strong>${t.insideTitle}</strong><br>&bull; ${t.insideP2}<br>&bull; ${t.insideP3}<br>&bull; ${t.insidePrio}</div></div><div><button class="paper-cta" onclick="flipTo(1)">${t.coverCta}</button><div class="paper-footer-num"><span>THE LOCATION X POST</span><span>${t.pageWord} 01</span></div></div></article>`
+        }];
+        const renderPage = (ev, num, sideClass, turnDir) => `<article class="paper-page ${sideClass}" data-turn="${turnDir}"><div><div class="masthead-meta"><span>THE LOCATION X POST</span><span>${t.pageWord} ${num}</span></div><span class="paper-kicker">${ev.tag}</span><h2 class="paper-headline">${ev.title}</h2>${ev.expired ? `<div class="paper-stamp">${t.stamp}</div>` : ""}<div class="paper-single-col"><p>${ev.description}</p></div><div class="paper-details-box"><strong>${t.dateWord}</strong> ${ev.date}<br><strong>${t.locWord}</strong> ${ev.location}<br><strong>${t.ageWord}</strong> ${t.ageVal}</div></div><div><a href="${ev.ctaLink}" class="paper-cta">${ev.ctaText}</a><div class="paper-footer-num"><span>${t.editionWord}</span><span>${t.pageWord} ${num}</span></div></div></article>`;
+        for (let i = 0; i < events.length; i += 2) {
+          const p1 = String(i + 2).padStart(2, "0"), p2 = String(i + 3).padStart(2, "0");
+          list.push({ isCover: false, label: t.pagesLabel.replace("{p1}", p1).replace("{p2}", p2), leftHtml: renderPage(events[i], p1, "clickable-left", "prev"), rightHtml: renderPage(events[i + 1], p2, "clickable-right", "next") });
+        }
+        return list;
+      }
+
+      let spreads = buildSpreads(), currentSpread = 0, isAnimating = false;
+      function applySpread(idx) {
+        const t = I18N[getLang()] || I18N.en;
+        currentSpread = idx;
+        const item = spreads[currentSpread];
+        spreadEl.className = item.isCover ? "newspaper-spread cover-mode" : "newspaper-spread";
+        spreadEl.innerHTML = item.isCover ? item.leftHtml : (item.leftHtml + item.rightHtml);
+        indicator.textContent = item.label;
+        prevBtn.textContent = t.prevBtn;
+        prevBtn.disabled = currentSpread === 0;
+        nextBtn.disabled = currentSpread === spreads.length - 1;
+        nextBtn.textContent = currentSpread === 0 ? t.openBtn : t.nextBtn;
+      }
+
+      window.flipTo = function (target) {
+        if (isAnimating || target < 0 || target >= spreads.length || target === currentSpread) return;
+        isAnimating = true;
+        const forward = target > currentSpread, cur = spreads[currentSpread], nxt = spreads[target];
+        const shadow = document.createElement("div"); shadow.className = "under-shadow";
+        const leaf = document.createElement("div");
+        if (cur.isCover && forward) {
+          spreadEl.className = "newspaper-spread"; spreadEl.innerHTML = nxt.leftHtml + nxt.rightHtml;
+          leaf.className = "flip-leaf flip-cover";
+          leaf.innerHTML = `<div class="flip-face front">${cur.leftHtml}<div class="curl-light"></div></div><div class="flip-face back">${nxt.leftHtml}<div class="curl-light"></div></div>`;
+          spreadEl.appendChild(shadow); spreadEl.appendChild(leaf);
+        } else if (forward) {
+          leaf.className = "flip-leaf flip-next";
+          leaf.innerHTML = `<div class="flip-face front">${cur.rightHtml}<div class="curl-light"></div></div><div class="flip-face back">${nxt.leftHtml}<div class="curl-light"></div></div>`;
+          spreadEl.innerHTML = cur.leftHtml + nxt.rightHtml; spreadEl.appendChild(shadow); spreadEl.appendChild(leaf);
+        } else {
+          leaf.className = "flip-leaf flip-prev";
+          leaf.innerHTML = `<div class="flip-face front">${cur.leftHtml}<div class="curl-light"></div></div><div class="flip-face back">${nxt.isCover ? nxt.leftHtml : nxt.rightHtml}<div class="curl-light"></div></div>`;
+          if (!nxt.isCover) { spreadEl.innerHTML = nxt.leftHtml + cur.rightHtml; spreadEl.appendChild(shadow); }
+          spreadEl.appendChild(leaf);
+        }
+        setTimeout(() => { applySpread(target); isAnimating = false; }, 860);
+      };
+
+      spreadEl.addEventListener("click", (e) => {
+        if (e.target.closest("a, button")) return;
+        const page = e.target.closest("[data-turn]");
+        if (page) flipTo(currentSpread + (page.dataset.turn === "next" ? 1 : -1));
+      });
+      prevBtn.addEventListener("click", () => flipTo(currentSpread - 1));
+      nextBtn.addEventListener("click", () => flipTo(currentSpread + 1));
+      document.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") flipTo(currentSpread + 1); if (e.key === "ArrowLeft") flipTo(currentSpread - 1); });
+      let startX = 0;
+      stageEl.addEventListener("touchstart", (e) => { startX = e.changedTouches.screenX; }, { passive: true });
+      stageEl.addEventListener("touchend", (e) => { const d = startX - e.changedTouches.screenX; if (Math.abs(d) > 45) flipTo(currentSpread + (d > 0 ? 1 : -1)); }, { passive: true });
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-lang], .lang-btn, button");
+        if (btn && /^(en|de|da)$/i.test(btn.textContent.trim())) {
+          localStorage.setItem("locationx_lang", btn.textContent.trim().toLowerCase());
+          setTimeout(() => { spreads = buildSpreads(); applySpread(currentSpread); }, 30);
+        }
+      });
+      applySpread(0);
+    })();
+  </script>
 </body>
 </html>
