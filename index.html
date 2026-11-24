@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -79,6 +79,33 @@
     </div>
   </div>
 
+  <section class="events-section" id="early-access" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <div class="sec-top">
+      <h2 class="sec-title">PRIORITY ACCESS // LOCATION X</h2>
+    </div>
+
+    <div class="form-box" style="max-width: 680px; margin: 0 auto; text-align: center;">
+      <span class="badge" style="margin-bottom: 10px;">STRICTLY 18+ &bull; 1-HOUR HEAD START</span>
+      <h3 style="font-size: 1.55rem; margin-bottom: 0.65rem; color: #ffffff;">GET YOUR TICKET 1 HOUR BEFORE EVERYONE ELSE</h3>
+      <p style="color: #9ca3af; font-size: 0.92rem; margin-bottom: 1.5rem; line-height: 1.6;">
+        Our club nights have strictly limited capacity and sell out fast. Join the priority list to get a private link <strong>1 full hour before</strong> public ticket release.
+      </p>
+
+      <form id="earlyAccessForm" style="display: flex; flex-direction: column; gap: 0.85rem; text-align: left;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;">
+          <input type="text" id="eaName" required placeholder="Your Name" style="padding: 0.85rem; background: #0a0a0a; border: 1px solid #262626; color: #fff; border-radius: 6px;">
+          <input type="text" id="eaContact" required placeholder="Instagram @handle or Email / WhatsApp" style="padding: 0.85rem; background: #0a0a0a; border: 1px solid #262626; color: #fff; border-radius: 6px;">
+        </div>
+
+        <button type="submit" id="eaBtn" class="btn-white" style="width: 100%; margin-top: 0.4rem;">UNLOCK 1-HOUR EARLY ACCESS</button>
+      </form>
+
+      <p id="eaStatus" style="display: none; margin-top: 1rem; color: #22c55e; font-weight: 600; font-size: 0.92rem;">
+        You're locked in. Watch your inbox — you'll get the private ticket link 1 hour before public drop.
+      </p>
+    </div>
+  </section>
+
   <footer>
     <div>&copy; 2026 <strong class="notranslate">LOCATION X</strong> &bull; Operated by <strong class="notranslate">Givvidere</strong> &bull; CVR: 46598164 (Denmark)</div>
     <div>
@@ -87,6 +114,37 @@
       <a href="contact.html">Impressum & Kontakt</a>
     </div>
   </footer>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzn-xI87FhAdEFndnegEUbR31O1YU_3grjdP7tII-3kDXVmDcLsdPfH55FsiWRuudc/exec";
+
+    document.getElementById('earlyAccessForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('eaBtn');
+      const status = document.getElementById('eaStatus');
+      btn.disabled = true;
+      btn.textContent = "LOCKING IN YOUR SPOT...";
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById('eaName').value,
+            contact: document.getElementById('eaContact').value
+          })
+        });
+
+        document.getElementById('earlyAccessForm').reset();
+        btn.style.display = "none";
+        status.style.display = "block";
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "UNLOCK 1-HOUR EARLY ACCESS";
+      }
+    });
+  </script>
   <script src="js/events.js"></script>
   <script src="js/lang.js"></script>
 </body>
