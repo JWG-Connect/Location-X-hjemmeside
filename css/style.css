@@ -149,156 +149,74 @@ footer a:hover { color: #38bdf8; }
 .goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
 body { top: 0px !important; }
 font { background-color: transparent !important; box-shadow: none !important; }
-/* =========================================================
-   MOBILVISNING (PÅVIRKER IKKE COMPUTER-VISNINGEN)
-   ========================================================= */
+
+/* === MOBIL-OPTIMERING (iPhone / Android) === */
 @media (max-width: 768px) {
-  html, body {
-    overflow-x: hidden;
-    max-width: 100%;
-  }
-
-  /* Topbar & Navigation */
   .top-bar {
-    flex-direction: column;
-    align-items: center;
-    padding: 0.9rem 1rem;
-    gap: 0.75rem;
+    padding: 0.75rem 1rem !important;
+    gap: 0.5rem !important;
   }
-
+  .brand-box {
+    font-size: 1.15rem !important;
+    padding: 0.35rem 0.75rem !important;
+  }
   .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.55rem 0.9rem;
-    padding: 0;
-    margin: 0;
+    gap: 0.45rem 0.75rem !important;
+    font-size: 0.68rem !important;
+    justify-content: center !important;
   }
-
-  .nav-links a {
-    font-size: 0.78rem;
+  .lang-switcher, .lang-bar {
+    margin-top: 0.2rem !important;
   }
-
   .promo-strip {
-    font-size: 0.72rem;
-    padding: 0.55rem 0.75rem;
-    line-height: 1.4;
-    text-align: center;
+    font-size: 0.64rem !important;
+    padding: 0.45rem 0.75rem !important;
+    line-height: 1.35 !important;
   }
+  .hero, .hero-section {
+    padding: 2rem 1.1rem 2.2rem !important;
+  }
+  .hero h1, .hero-section h1 {
+    font-size: 1.85rem !important;
+    line-height: 1.12 !important;
+    margin: 0.5rem 0 0.85rem !important;
+  }
+  .hero p, .hero-section p {
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1.25rem !important;
+  }
+  .hero-btns, .cta-group {
+    gap: 0.6rem !important;
+  }
+  .hero-btns a, .cta-group a, .btn-primary, .btn-secondary {
+    padding: 0.85rem 1rem !important;
+    font-size: 0.76rem !important;
+  }
+  .section, section {
+    padding: 2.2rem 1.1rem !important;
+  }
+  .section-title, h2 {
+    font-size: 1.45rem !important;
+    line-height: 1.18 !important;
+  }
+  .cards-grid, .concepts-grid, .events-grid {
+    gap: 0.9rem !important;
+  }
+  .card, .concept-card, .event-card {
+    padding: 1.25rem 1.1rem !important;
+  }
+  .early-access-box, #early-access {
+    padding: 1.5rem 1.15rem !important;
+  }
+  .early-access-box h2, #early-access h2 {
+    font-size: 1.45rem !important;
+    line-height: 1.18 !important;
+  }
+  .early-access-box input, #early-access input {
+    padding: 0.85rem 0.95rem !important;
+    font-size: 0.9rem !important;
+  }
+}
 
-  /* Hero & Videoer */
-  .hero-club {
-    flex-direction: column;
-    padding: 2rem 1.1rem;
-    gap: 2rem;
-    text-align: center;
-  }
-
-  .hero-info {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  .hero-info h1 {
-    font-size: 2rem;
-    line-height: 1.15;
-  }
-
-  .hero-info p {
-    font-size: 0.95rem;
-  }
-
-  .btn-row {
-    flex-direction: column;
-    width: 100%;
-    gap: 0.75rem;
-  }
-
-  .btn-row a,
-  .btn-white,
-  .btn-dark {
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
-  }
-
-  /* Video-viften tilpasset smal skærm */
-  .video-fan {
-    width: 100%;
-    max-width: 340px;
-    height: 290px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .v-card-vid {
-    width: 145px;
-    height: 250px;
-  }
-
-  /* Sektioner, Kort & Grids */
-  .events-section,
-  .cards-showcase {
-    padding: 2rem 1.1rem;
-    flex-direction: column;
-  }
-
-  .sec-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-  }
-
-  .sec-title {
-    font-size: 1.35rem;
-  }
-
-  .events-grid,
-  .stacked-cards {
-    width: 100%;
-    grid-template-columns: 1fr;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .v-card,
-  .v-card-1,
-  .v-card-2,
-  .v-card-3 {
-    position: static;
-    transform: none !important;
-    width: 100%;
-    box-sizing: border-box;
-    margin: 0;
-  }
-
-  .showcase-text {
-    width: 100%;
-    text-align: center;
-    margin-top: 1.5rem;
-  }
-
-  /* Early Access & Kontaktformularer */
-  .form-box {
-    padding: 1.35rem 1rem !important;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Footer */
-  footer {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.85rem;
-    padding: 1.5rem 1rem;
-    font-size: 0.82rem;
-  }
-
-  footer div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.6rem 1rem;
-  }
 }
